@@ -24,6 +24,19 @@
 - 📱 **高分屏支持** - 自适应devicePixelRatio，文字清晰锐利
 - 🌙 **深色主题** - 黑色背景，优雅简洁
 
+## 🎬 效果展示
+
+### 在线演示
+🌐 **[点击查看在线演示](https://time.geekaso.com)** ⏰
+
+### 截图预览
+
+<img src="TimeLine.png" alt="TimeWheel 效果图" width="100%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+
+*优雅的深色界面，6层同心圆盘展示不同粒度的时间，当前时间用青蓝色高亮显示*
+
+---
+
 ## 🚀 快速开始
 
 ### 前置要求
