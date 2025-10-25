@@ -1,4 +1,4 @@
-# TimeWheel - 时间轮盘可视化
+# TimeCircles - 时间轮盘可视化
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![React](https://img.shields.io/badge/React-18.0-blue.svg)](https://reactjs.org/)
@@ -31,7 +31,7 @@
 
 ### 截图预览
 
-<img src="TimeLine.png" alt="TimeWheel 效果图" width="100%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+<img src="TimeLine.png" alt="TimeCircles 效果图" width="100%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
 
 *优雅的深色界面，6层同心圆盘展示不同粒度的时间，当前时间用青蓝色高亮显示*
 
@@ -47,8 +47,8 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/yourusername/TimeWheel.git
-cd TimeWheel
+git clone https://github.com/yourusername/TimeCircles.git
+cd TimeCircles
 
 # 安装依赖
 npm install
@@ -102,7 +102,7 @@ npm run preview
 ## 📁 项目结构
 
 ```
-TimeWheel/
+TimeCircles/
 ├── src/
 │   ├── components/
 │   │   └── TimeWheel/
