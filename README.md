@@ -1,8 +1,16 @@
-# TimeCircles - 时间轮盘可视化
+<div align="center">
+  <img src="src/web.png" alt="TimeCircles Logo" width="120" height="120" style="border-radius: 50%;">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![React](https://img.shields.io/badge/React-18.0-blue.svg)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF.svg)](https://vitejs.dev/)
+  # ⏰ TimeCircles - 时间轮盘可视化
+
+  *一个优雅的同心圆盘时间可视化工具，实时展示当前时间*
+
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![React](https://img.shields.io/badge/React-18.0-blue.svg)](https://reactjs.org/)
+  [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF.svg)](https://vitejs.dev/)
+
+  **[🌐 在线演示](https://time.geekaso.com)** • **[📖 功能规划](./ROADMAP.md)** • **[🎯 优化方向](./优化方向总结.md)**
+</div>
 
 > 一个优雅的同心圆盘时间可视化工具。在旋转的轮盘上清晰直观地展示当前时间。
 
@@ -194,22 +202,21 @@ Canvas绘制引擎：
 
 ## 🚀 后续优化方向
 
-### 功能扩展
-- [ ] 时区支持（显示多个城市时间）
-- [ ] 闹钟/提醒功能
-- [ ] 自定义显示格式（12/24小时制等）
-- [ ] 导出为图片/视频
+本项目拥有**完整的功能规划和优化策略**，包括 23 个可能的功能扩展方向，涵盖功能、交互、视觉、性能和集成等多个维度。
 
-### UI/UX增强
-- [ ] 主题定制（颜色、字体、大小）
-- [ ] 浅色/深色模式切换
-- [ ] 交互式参考线（可拖动设置时间）
-- [ ] 彩虹渐变高亮效果
+详细的规划文档和建议实施路线，请参考：
 
-### 性能优化
-- [ ] 缓存不变部分（月圈等）
-- [ ] OffscreenCanvas 多线程渲染
-- [ ] WebGL 加速
+- 📖 **[ROADMAP.md](./ROADMAP.md)** - 详细的功能规划（包含实现方案、难度评估、时间成本）
+- 🎯 **[优化方向总结.md](./优化方向总结.md)** - 快速参考（优先级分类、建议路线、ROI分析）
+
+### 快速了解核心方向
+
+| 优先级 | 功能示例 | 难度 | 价值 |
+|--------|--------|------|------|
+| 🔴 P0 | 多主题、中心数字、显示/隐藏层、全屏 | ⭐ | ⭐⭐⭐⭐ |
+| 🟠 P1 | 多时区、倒计时、点击交互、农历显示 | ⭐⭐ | ⭐⭐⭐⭐ |
+| 🟡 P2 | 高级高亮、背景动画、性能优化、TypeScript | ⭐⭐⭐ | ⭐⭐⭐ |
+| 🔵 P3 | 天气集成、日历集成、会议室版本、学习追踪 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 
 ## 📄 许可证
 
