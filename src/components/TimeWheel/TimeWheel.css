@@ -1,0 +1,25 @@
+/**
+ * 时间轮盘组件样式
+ */
+
+.time-wheel-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+.time-wheel-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 处理高分屏显示 */
+@media (min-device-pixel-ratio: 2) {
+  .time-wheel-canvas {
+    image-rendering: auto;
+  }
+}
