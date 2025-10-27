@@ -63,12 +63,14 @@ function TimeWheel() {
 
   /**
    * 计算缩放因子（根据视口尺寸）
-   * 基准尺寸为1200px，根据屏幕最小边自动计算缩放比例
+   * 基准尺寸为1000px，根据屏幕最小边自动计算缩放比例
    * 范围限制：0.3 ~ 2.0，防止极端尺寸显示异常
+   *
+   * 通过降低基准尺寸，使得相同屏幕宽度下的轮盘显示更大（约20%）
    */
   const calculateScale = () => {
     const minDimension = Math.min(window.innerWidth, window.innerHeight);
-    const baseSize = 1200;
+    const baseSize = 1000;  // 从1200改为1000，使整体放大
     let scale = minDimension / baseSize;
 
     // 限制范围
