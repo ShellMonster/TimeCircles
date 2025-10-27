@@ -1,0 +1,115 @@
+/**
+ * Footer 组件样式
+ * 底部的版权信息和项目链接
+ */
+
+.footer {
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 11px;
+  opacity: 0.4;
+  font-family: '"Helvetica Neue", "Arial", sans-serif';
+  transition: opacity 0.3s ease;
+}
+
+.footer:hover {
+  opacity: 0.6;
+}
+
+/* 版权信息 */
+.footer-copyright {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+}
+
+/* 链接区域 */
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-links a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.footer-links a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* 分隔符 */
+.separator {
+  color: #ffffff;
+  opacity: 0.6;
+}
+
+/* 小屏幕响应式 */
+@media (max-width: 768px) {
+  .footer {
+    bottom: 8px;
+    padding: 8px 15px;
+    font-size: 10px;
+  }
+
+  .footer-copyright {
+    gap: 4px;
+  }
+
+  .footer-links {
+    gap: 4px;
+  }
+}
+
+/* 竖屏小屏幕（768px 以下宽度） */
+@media (max-width: 600px) {
+  .footer {
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 15px;
+    bottom: 5px;
+  }
+
+  .footer-copyright {
+    flex-direction: column;
+    text-align: center;
+    gap: 2px;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+}
+
+/* 超小屏幕（小于 400px） */
+@media (max-width: 400px) {
+  .footer {
+    font-size: 9px;
+    padding: 8px 10px;
+  }
+
+  .footer-copyright {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .separator {
+    display: none;
+  }
+
+  .footer-links a {
+    margin: 0 3px;
+  }
+}

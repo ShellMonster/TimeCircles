@@ -1,0 +1,90 @@
+/**
+ * Header 组件样式
+ * 顶部左侧的 logo + 标题 + 版本信息
+ */
+
+.header {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Logo 图标 */
+.header-logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.header-logo:hover {
+  opacity: 1;
+}
+
+/* 项目标题 */
+.header-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  opacity: 0.95;
+  font-family: '"Helvetica Neue", "Arial", sans-serif';
+}
+
+/* 版本信息 */
+.header-version {
+  font-size: 10px;
+  color: #ffffff;
+  opacity: 0.5;
+  margin-left: 4px;
+  font-family: '"Courier New", monospace';
+}
+
+/* 小屏幕响应式隐藏 */
+@media (max-width: 600px) {
+  .header {
+    top: 10px;
+    left: 10px;
+  }
+
+  .header-content {
+    gap: 6px;
+  }
+
+  .header-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  .header-title {
+    font-size: 12px;
+  }
+
+  .header-version {
+    display: none;
+  }
+}
+
+/* 超小屏幕（320px 以下） */
+@media (max-width: 400px) {
+  .header-title {
+    display: none;
+  }
+
+  .header-logo {
+    width: 20px;
+    height: 20px;
+  }
+}
