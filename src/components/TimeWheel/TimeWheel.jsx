@@ -36,6 +36,9 @@ function TimeWheel() {
   // 引用Canvas DOM元素
   const canvasRef = useRef(null);
 
+  // 缩放因子状态（用于响应式适配）
+  const [canvasScale, setCanvasScale] = useState(1);
+
   // 所有圆圈的动画状态
   const [secondAnimProgress, setSecondAnimProgress] = useState(0); // 秒圈
   const [minuteAnimProgress, setMinuteAnimProgress] = useState(0); // 分圈
@@ -57,6 +60,49 @@ function TimeWheel() {
   const dayAnimStartTimeRef = useRef(null);
   const weekAnimStartTimeRef = useRef(null);
   const monthAnimStartTimeRef = useRef(null);
+
+  /**
+   * 计算缩放因子（根据视口尺寸）
+   * 基准尺寸为1200px，根据屏幕最小边自动计算缩放比例
+   * 范围限制：0.3 ~ 2.0，防止极端尺寸显示异常
+   */
+  const calculateScale = () => {
+    const minDimension = Math.min(window.innerWidth, window.innerHeight);
+    const baseSize = 1200;
+    let scale = minDimension / baseSize;
+
+    // 限制范围
+    scale = Math.max(0.3, Math.min(scale, 2.0));
+
+    return scale;
+  };
+
+  // 初始化缩放因子和监听resize事件
+  useEffect(() => {
+    // 初始化时计算缩放因子
+    setCanvasScale(calculateScale());
+
+    // 防抖处理resize事件（避免频繁计算）
+    let resizeTimer = null;
+    const handleResize = () => {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const newScale = calculateScale();
+        setCanvasScale(newScale);
+      }, 200);  // 200ms防抖
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // 处理屏幕方向改变
+    window.addEventListener('orientationchange', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+      if (resizeTimer) clearTimeout(resizeTimer);
+    };
+  }, []);
 
   // 获取动画帧时间戳（每帧更新）
   const animationTime = useAnimation();
@@ -205,21 +251,9 @@ function TimeWheel() {
     rotations.week = calcAngleAnim(currentWeek, prevWeek, 7, weekAnimProgress);
     rotations.month = calcAngleAnim(currentMonth, prevMonth, 12, monthAnimProgress);
 
-    // 绘制时间轮盘（使用逻辑尺寸，而不是物理尺寸）
-    CanvasRenderer.drawTimeWheel(ctx, width, height, rotations, currentTime);
-  }, [currentTime, secondAnimProgress, minuteAnimProgress, hourAnimProgress, dayAnimProgress, weekAnimProgress, monthAnimProgress]); // 当时间或动画进度变化时重新绘制
-
-  // 处理窗口大小变化
-  useEffect(() => {
-    const handleResize = () => {
-      // 触发重新绘制（通过依赖项的变化）
-      // 这里我们可以手动触发重绘，但由于useAnimation已经在持续更新，
-      // Canvas会自动调整大小
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    // 绘制时间轮盘（使用逻辑尺寸和缩放因子）
+    CanvasRenderer.drawTimeWheel(ctx, width, height, rotations, currentTime, canvasScale);
+  }, [currentTime, secondAnimProgress, minuteAnimProgress, hourAnimProgress, dayAnimProgress, weekAnimProgress, monthAnimProgress, canvasScale]); // 当时间、动画进度或缩放因子变化时重新绘制
 
   return (
     <div className="time-wheel-container">

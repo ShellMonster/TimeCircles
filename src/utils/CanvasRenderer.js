@@ -6,7 +6,7 @@
  * 当文字转到参考线（水平）位置时，该文字代表当前时间值
  */
 
-import { RADII, COUNTS, LAYERS, TEXT_CONFIG, REFERENCE_LINE_CONFIG, CENTER_CONFIG, BACKGROUND_COLOR } from './constants.js';
+import { RADII, COUNTS, LAYERS, TEXT_CONFIG, REFERENCE_LINE_CONFIG, CENTER_CONFIG, BACKGROUND_COLOR, getScaledConfig } from './constants.js';
 import TimeCalculator from './TimeCalculator.js';
 
 class CanvasRenderer {
@@ -24,8 +24,12 @@ class CanvasRenderer {
    * @param {number} height - Canvas 高度
    * @param {Object} rotations - 各层的旋转角度
    * @param {Date} currentTime - 当前时间
+   * @param {number} scale - 缩放因子（用于响应式适配）
    */
-  static drawTimeWheel(ctx, width, height, rotations, currentTime) {
+  static drawTimeWheel(ctx, width, height, rotations, currentTime, scale = 1) {
+    // 根据缩放因子获取缩放后的配置
+    const config = getScaledConfig(scale);
+
     const centerX = width / 2;
     const centerY = height / 2;
 
@@ -33,8 +37,8 @@ class CanvasRenderer {
     this.clearCanvas(ctx, width, height);
 
     // 绘制所有圆圈层（从外到内，保证顺序）
-    LAYERS.forEach(layer => {
-      this.drawLayer(ctx, centerX, centerY, layer, rotations[layer.key]);
+    config.LAYERS.forEach(layer => {
+      this.drawLayer(ctx, centerX, centerY, layer, rotations[layer.key], config);
     });
 
     // 参考横线和中心点已移除（2025-10-24）
@@ -65,10 +69,11 @@ class CanvasRenderer {
    * @param {CanvasRenderingContext2D} ctx
    * @param {number} centerX - 中心X坐标
    * @param {number} centerY - 中心Y坐标
-   * @param {Object} layer - 圆圈配置
+   * @param {Object} layer - 圆圈配置（已缩放）
    * @param {number} rotation - 该层的旋转角度（度数）
+   * @param {Object} config - 缩放后的完整配置（包含TEXT_CONFIG等）
    */
-  static drawLayer(ctx, centerX, centerY, layer, rotation) {
+  static drawLayer(ctx, centerX, centerY, layer, rotation, config) {
     // 将旋转角度转为弧度
     const rotationRad = TimeCalculator.degreesToRadians(rotation);
 
@@ -98,7 +103,7 @@ class CanvasRenderer {
         normalizedAngle > (360 - this.HIGHLIGHT_TOLERANCE);
 
       // 绘制文字（传递最终角度，使文字随轮盘转动）
-      this.drawText(ctx, text, x, y, finalAngleRad, isOnReferenceLine);
+      this.drawText(ctx, text, x, y, finalAngleRad, isOnReferenceLine, config.TEXT_CONFIG);
     }
   }
 
@@ -109,7 +114,7 @@ class CanvasRenderer {
    * - 文字会根据 angleRad 旋转显示
    * - 当角度为0（参考线）时，文字显示为水平
    * - 当角度不为0时，文字倾斜显示（模拟真实转动）
-   * - 高亮时显示绿色发光效果
+   * - 高亮时显示青蓝色发光效果
    *
    * @param {CanvasRenderingContext2D} ctx
    * @param {string} text - 要绘制的文字
@@ -117,8 +122,9 @@ class CanvasRenderer {
    * @param {number} y - Y坐标
    * @param {number} angleRad - 文字的旋转角度（弧度）
    * @param {boolean} isHighlighted - 是否在参考线上（高亮）
+   * @param {Object} textConfig - 文字样式配置（已缩放）
    */
-  static drawText(ctx, text, x, y, angleRad, isHighlighted) {
+  static drawText(ctx, text, x, y, angleRad, isHighlighted, textConfig) {
     // 保存Canvas状态，便于恢复
     ctx.save();
 
@@ -131,7 +137,7 @@ class CanvasRenderer {
     ctx.rotate(angleRad);
 
     // 设置文字样式（包括字体加粗）
-    ctx.font = `${TEXT_CONFIG.fontWeight} ${TEXT_CONFIG.fontSize}px ${TEXT_CONFIG.fontFamily}`;
+    ctx.font = `${textConfig.fontWeight} ${textConfig.fontSize}px ${textConfig.fontFamily}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
@@ -139,30 +145,30 @@ class CanvasRenderer {
       // 高亮状态：青蓝色圆形背光，白色文字
 
       // 【第一层】最外层大背光（模拟圆形光源）
-      ctx.shadowColor = TEXT_CONFIG.highlightColorGlow;
-      ctx.shadowBlur = 35;
+      ctx.shadowColor = textConfig.highlightColorGlow;
+      ctx.shadowBlur = 35 * (textConfig.fontSize / 16);  // 根据字体大小比例调整
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = TEXT_CONFIG.highlightColor;
+      ctx.fillStyle = textConfig.highlightColor;
       ctx.fillText(text, 0, 0);
 
       // 【第二层】中层背光
-      ctx.shadowColor = TEXT_CONFIG.highlightColor;
-      ctx.shadowBlur = 25;
+      ctx.shadowColor = textConfig.highlightColor;
+      ctx.shadowBlur = 25 * (textConfig.fontSize / 16);
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = TEXT_CONFIG.highlightColor;
+      ctx.fillStyle = textConfig.highlightColor;
       ctx.fillText(text, 0, 0);
 
       // 【第三层】轮廓描边（青蓝色背景）
       ctx.shadowBlur = 0;
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = TEXT_CONFIG.highlightColor;
+      ctx.lineWidth = 3 * (textConfig.fontSize / 16);
+      ctx.strokeStyle = textConfig.highlightColor;
       ctx.globalAlpha = 1;
       ctx.strokeText(text, 0, 0);
 
       // 【第四层】清晰的核心（白色文字）
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = TEXT_CONFIG.highlightColor;
-      ctx.fillStyle = TEXT_CONFIG.fillColor;  // 白色文字
+      ctx.shadowBlur = 12 * (textConfig.fontSize / 16);
+      ctx.shadowColor = textConfig.highlightColor;
+      ctx.fillStyle = textConfig.fillColor;  // 白色文字
       ctx.globalAlpha = 1;
       ctx.fillText(text, 0, 0);
     } else {
@@ -170,7 +176,7 @@ class CanvasRenderer {
       ctx.shadowColor = 'transparent';
       ctx.shadowBlur = 0;
       ctx.lineWidth = 0;
-      ctx.fillStyle = TEXT_CONFIG.fillColor;
+      ctx.fillStyle = textConfig.fillColor;
       ctx.globalAlpha = 1;
       ctx.fillText(text, 0, 0);
     }

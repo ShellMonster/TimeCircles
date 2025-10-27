@@ -26,6 +26,105 @@ export const COUNTS = {
   second: 60       // 0-59秒
 };
 
+// Canvas背景色
+export const BACKGROUND_COLOR = '#000000';
+
+/**
+ * 获取缩放后的配置
+ * 根据缩放因子动态生成所有尺寸配置
+ * @param {number} scale - 缩放因子（0.3 ~ 2.0）
+ * @returns {object} 包含所有缩放后配置的对象
+ */
+export function getScaledConfig(scale = 1) {
+  // 缩放后的圆圈半径
+  const scaledRadii = {
+    month: 60 * scale,
+    day: 130 * scale,
+    week: 190 * scale,
+    hour: 250 * scale,
+    minute: 320 * scale,
+    second: 400 * scale
+  };
+
+  // 缩放后的文字配置
+  const scaledTextConfig = {
+    fontSize: 16 * scale,
+    fontFamily: '"Helvetica Neue", "Arial", sans-serif',
+    fontWeight: '400',
+    fillColor: '#ffffff',
+    highlightColor: '#00a8d8',
+    highlightColorGlow: '#006699',
+    shadowBlur: 20 * scale
+  };
+
+  // 缩放后的参考线配置
+  const scaledReferenceLineConfig = {
+    color: '#00ff00',
+    width: 2 * scale,
+    length: 400 * scale
+  };
+
+  // 缩放后的中心点配置
+  const scaledCenterConfig = {
+    radius: 8 * scale,
+    color: '#00ff00'
+  };
+
+  // 格式化函数（动态生成缩放后的LAYERS）
+  const formatMonth = (month) => MONTH_NAMES[month];
+  const formatDay = (day) => {
+    const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十',
+      '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
+      '二十一', '二十二', '二十三', '二十四', '二十五', '二十六', '二十七', '二十八', '二十九', '三十', '三十一'];
+    return chineseNumbers[day] + '日';
+  };
+  const formatWeek = (week) => WEEK_NAMES[week];
+  const formatHour = (hour) => {
+    const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十',
+      '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
+      '二十一', '二十二', '二十三'];
+    return chineseNumbers[hour] + '点';
+  };
+  const formatMinute = (minute) => {
+    const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十',
+      '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
+      '二十一', '二十二', '二十三', '二十四', '二十五', '二十六', '二十七', '二十八', '二十九', '三十',
+      '三十一', '三十二', '三十三', '三十四', '三十五', '三十六', '三十七', '三十八', '三十九', '四十',
+      '四十一', '四十二', '四十三', '四十四', '四十五', '四十六', '四十七', '四十八', '四十九', '五十',
+      '五十一', '五十二', '五十三', '五十四', '五十五', '五十六', '五十七', '五十八', '五十九'];
+    return chineseNumbers[minute] + '分';
+  };
+  const formatSecond = (second) => {
+    const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十',
+      '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
+      '二十一', '二十二', '二十三', '二十四', '二十五', '二十六', '二十七', '二十八', '二十九', '三十',
+      '三十一', '三十二', '三十三', '三十四', '三十五', '三十六', '三十七', '三十八', '三十九', '四十',
+      '四十一', '四十二', '四十三', '四十四', '四十五', '四十六', '四十七', '四十八', '四十九', '五十',
+      '五十一', '五十二', '五十三', '五十四', '五十五', '五十六', '五十七', '五十八', '五十九'];
+    return chineseNumbers[second] + '秒';
+  };
+
+  // 生成缩放后的LAYERS配置
+  const scaledLayers = [
+    { key: 'month', radius: scaledRadii.month, count: COUNTS.month, format: formatMonth },
+    { key: 'day', radius: scaledRadii.day, count: COUNTS.day, format: formatDay },
+    { key: 'week', radius: scaledRadii.week, count: COUNTS.week, format: formatWeek },
+    { key: 'hour', radius: scaledRadii.hour, count: COUNTS.hour, format: formatHour },
+    { key: 'minute', radius: scaledRadii.minute, count: COUNTS.minute, format: formatMinute },
+    { key: 'second', radius: scaledRadii.second, count: COUNTS.second, format: formatSecond }
+  ];
+
+  return {
+    RADII: scaledRadii,
+    TEXT_CONFIG: scaledTextConfig,
+    REFERENCE_LINE_CONFIG: scaledReferenceLineConfig,
+    CENTER_CONFIG: scaledCenterConfig,
+    LAYERS: scaledLayers,
+    COUNTS: COUNTS,
+    BACKGROUND_COLOR: BACKGROUND_COLOR
+  };
+}
+
 // 月份中文名称
 export const MONTH_NAMES = [
   '一月', '二月', '三月', '四月', '五月', '六月',
@@ -69,9 +168,6 @@ export const CENTER_CONFIG = {
   radius: 8,
   color: '#00ff00'
 };
-
-// Canvas背景色
-export const BACKGROUND_COLOR = '#000000';
 
 /**
  * 格式化月份
